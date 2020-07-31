@@ -22,10 +22,8 @@ class Chart extends StatelessWidget {
               transaction.date.year == weekDay.year)
             totalSum += transaction.amount;
 
-        print("${DateFormat.E().format(weekDay)}'s transactions are $totalSum");
-
         return {'day': DateFormat.E().format(weekDay), 'amount': totalSum};
-      });
+      }).reversed.toList();
 
   double get totalSpendings => groupedTransactionValues.fold(
       0.0, (sum, daySpendings) => sum + daySpendings['amount']);

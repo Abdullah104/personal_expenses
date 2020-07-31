@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -76,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textBaseline: TextBaseline.ideographic,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionsList(_userTransactions),
+            TransactionsList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
@@ -91,21 +94,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
       id: DateTime.now().toString(),
     );
 
     setState(() => _userTransactions.add(newTransaction));
   }
 
-  void _startAddNewTransaction(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => NewTransaction(_addNewTransaction),
-    );
-  }
+  void _deleteTransaction(String id) => setState(() =>
+      _userTransactions.removeWhere((transaction) => transaction.id == id));
+
+  void _startAddNewTransaction(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => NewTransaction(_addNewTransaction),
+      );
 }
